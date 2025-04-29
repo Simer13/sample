@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Clone repo') {
       steps {
-        git 'https://github.com/LocalHost003/MERN-PROJECT'
+        git 'https://github.com/Simer13/sample'
       }
     }
 
