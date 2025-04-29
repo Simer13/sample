@@ -8,9 +8,17 @@ pipeline {
       }
     }
 
+    stage('Cleanup containers') {
+      steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+          bat 'docker-compose down'
+        }
+      }
+    }
+
     stage('Build Docker images') {
       steps {
-        bat 'docker-compose build --no-cache'  // Optional: use --no-cache to avoid using old layers
+        bat 'docker-compose build'
       }
     }
 
@@ -18,16 +26,6 @@ pipeline {
       steps {
         bat 'docker-compose up -d'
       }
-    }
-  }
-
-  post {
-    failure {
-      echo 'Pipeline failed! Cleaning up...'
-      bat 'docker-compose down || true'
-    }
-    success {
-      echo 'Pipeline completed successfully!'
     }
   }
 }
