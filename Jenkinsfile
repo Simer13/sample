@@ -10,14 +10,24 @@ pipeline {
 
     stage('Build Docker images') {
       steps {
-        sh 'docker-compose build'
+        bat 'docker-compose build --no-cache'  // Optional: use --no-cache to avoid using old layers
       }
     }
 
     stage('Run containers') {
       steps {
-        sh 'docker-compose up -d'
+        bat 'docker-compose up -d'
       }
+    }
+  }
+
+  post {
+    failure {
+      echo 'Pipeline failed! Cleaning up...'
+      bat 'docker-compose down || true'
+    }
+    success {
+      echo 'Pipeline completed successfully!'
     }
   }
 }
