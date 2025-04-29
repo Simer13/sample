@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Clone repo') {
       steps {
-        git 'https://github.com/Simer13/sample'
+        git url: 'https://github.com/Simer13/sample', branch: 'main'
       }
     }
 
